@@ -11,7 +11,7 @@ from fechas import fecha_z_manual
 
 
 logging.basicConfig(
-    filename="ec_metrics_coachMetrics.log",
+    filename="ec_metrics_historial.log",
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"

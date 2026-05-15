@@ -18,11 +18,14 @@ def fecha_z_automatica():
         hour=0, minute=0, second=0, microsecond=0
     )
     final_domingo_local = inicio_lunes_local + timedelta(days=7) - timedelta(seconds=1)
+
+
+    
     # Convertir a UTC
     inicio_lunes_utc = inicio_lunes_local.astimezone(timezone.utc)
     final_domingo_utc = final_domingo_local.astimezone(timezone.utc)
 
-    # retornamos y convertimos a milisegundos
+    
 
     start_time = inicio_lunes_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
     end_time = final_domingo_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
@@ -41,7 +44,7 @@ def fecha_z_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
         tz_local = zoneinfo.ZoneInfo("America/Mexico_City")
         
         # Crear objetos datetime basados en tus argumentos (asumiendo hora local)
-        # Inicio a las 00:00:00 y fin a las 23:59:59 para cubrir el día completo
+        # Inicio a las 00:00:00 y fin a las 23:59:59 para cubrir el dï¿½a completo
         inicio_local = datetime(ano_i, mes_i, dia_i, 0, 0, 0, tzinfo=tz_local)
         final_local = datetime(ano_f, mes_f, dia_f, 23, 59, 59, tzinfo=tz_local)
         
@@ -63,14 +66,14 @@ def fecha_z_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
 
 def fecha_milisegundos():
     try:
-        # Definir zona horaria México
+        # Definir zona horaria Mï¿½xico
         tz_local = zoneinfo.ZoneInfo("America/Mexico_City")
 
         # Obtener el ahora regional
         ahora_local = datetime.now(tz_local)
 
         # Calcular el lunes de la SEMANA ANTERIOR a las 00:00:00
-        # (Tal como tenías en tu lógica original con el -timedelta(days=7))
+        # (Tal como tenï¿½as en tu lï¿½gica original con el -timedelta(days=7))
         dias_al_lunes = ahora_local.weekday()
         inicio_lunes_local = ahora_local - timedelta(days=dias_al_lunes) - timedelta(days=7)
         inicio_lunes_local = inicio_lunes_local.replace(
@@ -80,7 +83,7 @@ def fecha_milisegundos():
         # El domingo finaliza justo antes del lunes actual
         final_domingo_local = inicio_lunes_local + timedelta(days=7) - timedelta(seconds=1)
 
-        # Convertir a UTC (Opcional para timestamp, pero buena práctica)
+        # Convertir a UTC (Opcional para timestamp, pero buena prï¿½ctica)
         inicio_lunes_utc = inicio_lunes_local.astimezone(timezone.utc)
         final_domingo_utc = final_domingo_local.astimezone(timezone.utc)
 
@@ -102,7 +105,7 @@ def fecha_milisegundos_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
     (dia_inicio, mes_inicio, ano_inicio, dia_fin, mes_fin, ano_fin)
     """
     try:
-        # Definir zona horaria México
+        # Definir zona horaria Mï¿½xico
         tz_local = zoneinfo.ZoneInfo("America/Mexico_City")
 
         # 1. Crear el inicio (00:00:00)

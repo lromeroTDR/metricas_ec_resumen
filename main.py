@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 import ec_metrics_pipeline
-import os
 from dotenv import load_dotenv
-import sys
 from datetime import timedelta, datetime
-# Importamos las funciones de tu archivo bd.py
 from bd import validar_existencia_semanal, guardar_en_sql 
 from fechas import fecha_z_automatica
 
@@ -23,7 +20,7 @@ def main():
     
     try:
         # 1. Obtener las fechas
-        start_time, end_time = fecha_z_automatica()
+        _, end_time = fecha_z_automatica()
         end_time =  datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S.%fZ') - timedelta(hours=6)
         # 2. VALIDAR: Mandamos SOLO 1 argumento (end_time)
         # La funcion en tu bd.py ya sabe que la tabla es reporte_ec_metricas_operador
@@ -35,7 +32,7 @@ def main():
         if resultado is not None and not resultado.is_empty():
        
             # Aqui si mandamos el nombre de la tabla porque guardar_en_sql si recibe 2
-            guardar_en_sql(resultado, "reporte_ec_resumen")
+            guardar_en_sql(resultado)
             
             logging.info(f"Pipeline completado. Registros: {resultado.height}")
             print("Proceso terminado exitosamente.")

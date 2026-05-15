@@ -6,7 +6,7 @@ import polars as pl
 import os
 from fechas import fecha_milisegundos, fecha_z_automatica, fecha_z_manual, fecha_milisegundos_manual
 import logging
-from config import headers
+from config import headers, API_URLS, tags_filtro
 from wrapp import retry_api
 
 logger = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ def extraer_score_tags(url, headers, scoreType, start_time, end_time):
         return pl.from_dicts(all_events, strict=False)
     else:
         logger.warning("No se encontraron eventos tras recorrer todas las páginas")
-        return pl.DataFrame() # Retornar un DF vacío en lugar de None evita errores después
+        return pl.DataFrame() 
 
 def transformacion_scores(scores):
   """ Damos tratamiento al DF"""
@@ -114,7 +114,7 @@ def transformacion_scores(scores):
                             aggregate_function="sum"
                             )
                         .rename({"tagId": "parentTagId", "tagScore":"parentTagScore"})
-              )      # No se Usa en el negocio
+              )     
 
     logger.info("Transformación de scores finalizada exitosamente")
 
@@ -408,18 +408,18 @@ def unir_metricas_ec(proporcion_viajes, metricas, end_time):
 
 def pipeline ():  
   start_time, end_time = fecha_z_automatica()
-  url = "https://api.samsara.com/safety-scores/tags"
+  url = API_URLS["tags_scores"]
   scoreType = "vehicle"
   scores = extraer_score_tags(url, headers, scoreType, start_time, end_time)
   df_score_transformado = transformacion_scores(scores)
   df_score_transformado.tail()
-  url = "https://api.samsara.com/tags"
+  url = API_URLS["tags"]
   tags = extraer_tags_samsara(headers, url)
-  tags_filtro = ["EC-01", "EC-02","EC-03", "EC-05","EC-08", "EC-10"]
-  tags_transformado = transformacion_tags(df_tags=tags, tags_filtro=tags_filtro)
+  filtro = tags_filtro
+  tags_transformado = transformacion_tags(df_tags=tags, tags_filtro=filtro)
   tags_transformado.head()
   tags_scores = unir_tags_scores(df_score_transformado, tags_transformado)
-  url_metadata ="https://api.samsara.com/fleet/vehicles"
+  url_metadata = API_URLS["vehicles"]
   df = extraer_vehiculos(headers=headers, url_operadores=url_metadata)
   df.head()
   df_vehiculos_transformado = transformacion_vehiculos(df = df)
@@ -428,29 +428,29 @@ def pipeline ():
   (df_vehicle_tags.head())
   list_vehicles =  df_vehicle_tags["vehicleId"].to_list()
   start_timeM, end_timeM = fecha_milisegundos()
-  url = "https://api.samsara.com/v1/fleet/trips"
+  url = API_URLS["trips"]
   datos = extraer_viajes(url, headers, list_vehicles, start_timeM, end_timeM)
   proporcionViajes = proporcion_viajes(datos, df_vehicle_tags)
   df_final = unir_metricas_ec(proporcionViajes, tags_scores, end_time)
-  df_final.glimpse()
+  logger.info(df_final.glimpse())
 
   return df_final
 
 
 def pipeline_manual (dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):  
   start_time, end_time = fecha_z_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f)
-  url = "https://api.samsara.com/safety-scores/tags"
+  url = API_URLS["tags_scores"]
   scoreType = "vehicle"
   scores = extraer_score_tags(url, headers, scoreType, start_time, end_time)
   df_score_transformado = transformacion_scores(scores)
   df_score_transformado.tail()
-  url = "https://api.samsara.com/tags"
+  url = API_URLS["tags"]
   tags = extraer_tags_samsara(headers, url)
-  tags_filtro = ["EC-01", "EC-02","EC-03", "EC-05","EC-08", "EC-10"]
-  tags_transformado = transformacion_tags(df_tags=tags, tags_filtro=tags_filtro)
+  filtro = tags_filtro
+  tags_transformado = transformacion_tags(df_tags=tags, tags_filtro=filtro)
   tags_transformado.head()
   tags_scores = unir_tags_scores(df_score_transformado, tags_transformado)
-  url_metadata ="https://api.samsara.com/fleet/vehicles"
+  url_metadata =API_URLS["vehicles"]
   df = extraer_vehiculos(headers=headers, url_operadores=url_metadata)
   df.head()
   df_vehiculos_transformado = transformacion_vehiculos(df = df)
@@ -459,7 +459,7 @@ def pipeline_manual (dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
   (df_vehicle_tags.head())
   list_vehicles =  df_vehicle_tags["vehicleId"].to_list()
   start_timeM, end_timeM = fecha_milisegundos_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f)
-  url = "https://api.samsara.com/v1/fleet/trips"
+  url =  API_URLS["trips"]
   datos = extraer_viajes(url, headers, list_vehicles, start_timeM, end_timeM)
   proporcionViajes = proporcion_viajes(datos, df_vehicle_tags)
   df_final = unir_metricas_ec(proporcionViajes, tags_scores, end_time)

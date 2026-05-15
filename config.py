@@ -17,10 +17,19 @@ headers = {
 
 # -*- coding: utf-8 -*-
 DB_CONFIG = {
-    "server": "10.3.11.10",   
-    "database": "IntegracionesBI",
-    "schema": "samsara",
-    "table": "reporte_ec_resumen",
-    "user": "lromero",
-    "pass": "5G?Y72K>gofh"
+    "server": os.getenv("DB_SERVER"),
+    "database": os.getenv("DB_DATABASE"),
+    "schema": os.getenv("DB_SCHEMA"),
+    "table": os.getenv("DB_TABLE"),
+    "user": os.getenv("DB_USER"),
+    "pass": os.getenv("DB_PASS")
 }
+
+API_URLS = {
+    "tags_scores": os.getenv("URL_TAGS_SCORES"),
+    "tags": os.getenv("URL_TAGS"),
+    "vehicles": os.getenv("URL_VEHICLES"),
+    "trips": os.getenv("URL_TRIPS")
+}
+
+tags_filtro = ["EC-01", "EC-02","EC-03", "EC-05","EC-08", "EC-10"]
