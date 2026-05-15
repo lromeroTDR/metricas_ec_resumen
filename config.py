@@ -7,7 +7,7 @@ load_dotenv()
 # Obtener el token de la variable de entorno
 token = os.getenv("SAMSARA_TOKEN")
 
-# Headers actualizados
+# Headers 
 headers = {
     "accept": "application/json",
     "authorization": f"Bearer {token}"

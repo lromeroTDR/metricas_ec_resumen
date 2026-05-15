@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
-import ec_metrics_pipeline
-import os
-from dotenv import load_dotenv
 import sys
-from datetime import timedelta, datetime
-# Importamos las funciones de tu archivo bd.py
+from dotenv import load_dotenv
+from ec_metrics_pipeline import pipeline_manual
 from bd import validar_existencia_semanal, guardar_en_sql 
 from fechas import fecha_z_manual
 
@@ -19,25 +16,18 @@ logging.basicConfig(
 
 def main(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
     load_dotenv()
-    logging.info("Iniciando la ejecucion global del sistema")
+    logging.info(" ======  Iniciando la ejecucion global del sistema ======")
     
     try:
-        # 1. Obtener las fechas
-        start_time, end_time = fecha_z_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f)
-        end_time =  datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S.%fZ') - timedelta(hours=6)
-        # 2. VALIDAR: Mandamos SOLO 1 argumento (end_time)
-        # La funcion en tu bd.py ya sabe que la tabla es reporte_ec_metricas_operador
+        
+        _, end_time = fecha_z_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f, False)
+    
         validar_existencia_semanal(end_time)
 
-        # 3. EJECUTAR PIPELINE: Solo llega aqui si la fecha es nueva
-        resultado = ec_metrics_pipeline.pipeline_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f)
+        resultado = pipeline_manual(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f)
         
         if resultado is not None and not resultado.is_empty():
-            # 4. GUARDAR EN CSV
-           
             
-            # 5. GUARDAR EN SQL SERVER
-            # Aqui si mandamos el nombre de la tabla porque guardar_en_sql si recibe 2
             guardar_en_sql(resultado, "reporte_ec_resumen")
             
             logging.info(f"Pipeline completado. Registros: {resultado.height}")
@@ -46,12 +36,11 @@ def main(dia_i, mes_i, ano_i, dia_f, mes_f, ano_f):
             logging.warning("El pipeline no devolvio datos.")
 
     except Exception as e:
-        logging.error(f"Error critico en el flujo principal: {str(e)}", exc_info=True)
+        logging.error(f"===== Error critico en el flujo principal: {str(e)} =====", exc_info=True)
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    # sys.argv[0] es siempre el nombre del archivo
-    # Verificamos que se pasen los 6 argumentos necesarios
+   
     if len(sys.argv) == 7:
         try:
             # Convertimos a entero cada argumento recibido
@@ -66,5 +55,5 @@ if __name__ == "__main__":
         except ValueError:
             print("Error: Todos los argumentos deben ser numeros enteros.")
     else:
-        print("Uso correcto: python main.py <dia_i> <mes_i> <ano_i> <dia_f> <mes_f> <ano_f>")
-        print("Ejemplo: python main.py 01 05 2026 07 05 2026")
+        print("Uso correcto: python historial.py <dia_i> <mes_i> <ano_i> <dia_f> <mes_f> <ano_f>")
+        print("Ejemplo: python historial.py 01 05 2026 07 05 2026")

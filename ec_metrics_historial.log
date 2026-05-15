@@ -1,0 +1,42 @@
+2026-05-15 14:37:18 - root - INFO - Iniciando la ejecucion global del sistema
+2026-05-15 14:37:18 - fechas - INFO - Parametros de fecha manuales generados: 2026-04-27T00:00:00.000Z - 2026-05-03T23:59:59.000Z
+2026-05-15 14:37:19 - bd - INFO - Validacion semanal Exitosa
+2026-05-15 14:37:19 - fechas - INFO - Parametros de fecha manuales generados: 2026-04-27T06:00:00.000Z - 2026-05-04T05:59:59.000Z
+2026-05-15 14:37:19 - wrapp - INFO - Iniciando intento 1 para: extraer_score_tags
+2026-05-15 14:37:20 - ec_metrics_pipeline - INFO - Descargados 56 eventos. Total acumulado: 56
+2026-05-15 14:37:20 - ec_metrics_pipeline - INFO - Proceso finalizado exitosamente
+2026-05-15 14:37:20 - ec_metrics_pipeline - INFO - Transformación de scores finalizada exitosamente
+2026-05-15 14:37:20 - wrapp - INFO - Iniciando intento 1 para: extraer_tags_samsara
+2026-05-15 14:37:21 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 56 tags.
+2026-05-15 14:37:21 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 6 tags.
+2026-05-15 14:37:21 - ec_metrics_pipeline - INFO - Éxito: Columna 'nameParent' agregada correctamente.
+2026-05-15 14:37:21 - wrapp - INFO - Iniciando intento 1 para: extraer_vehiculos
+2026-05-15 14:37:25 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 454 registros activos.
+2026-05-15 14:37:25 - ec_metrics_pipeline - INFO - Iniciando intento ['vehicleId', 'vehicleName', 'tagId', 'tagName', 'parentTagId']
+2026-05-15 14:37:25 - ec_metrics_pipeline - INFO - Éxito: Columna agregada correctamente.
+2026-05-15 14:37:25 - fechas - INFO - Rango manual establecido: 2026-04-27 00:00:00-06:00 a 2026-05-03 23:59:59-06:00
+2026-05-15 14:44:07 - ec_metrics_pipeline - INFO - Consolidando datos...
+2026-05-15 14:44:07 - bd - INFO - Cargando en: samsara.reporte_ec_resumen
+2026-05-15 14:44:08 - bd - INFO - Exito en la carga
+2026-05-15 14:44:08 - root - INFO - Pipeline completado. Registros: 6
+2026-05-15 14:48:07 - root - INFO - Iniciando la ejecucion global del sistema
+2026-05-15 14:48:07 - fechas - INFO - Parametros de fecha manuales generados: 2026-04-20T00:00:00.000Z - 2026-04-26T23:59:59.000Z
+2026-05-15 14:48:08 - bd - INFO - Validacion semanal Exitosa
+2026-05-15 14:48:08 - fechas - INFO - Parametros de fecha manuales generados: 2026-04-20T06:00:00.000Z - 2026-04-27T05:59:59.000Z
+2026-05-15 14:48:08 - wrapp - INFO - Iniciando intento 1 para: extraer_score_tags
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Descargados 56 eventos. Total acumulado: 56
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Proceso finalizado exitosamente
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Transformación de scores finalizada exitosamente
+2026-05-15 14:48:09 - wrapp - INFO - Iniciando intento 1 para: extraer_tags_samsara
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 56 tags.
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 6 tags.
+2026-05-15 14:48:09 - ec_metrics_pipeline - INFO - Éxito: Se unieron los Scores_Tags, con los tags
+2026-05-15 14:48:09 - wrapp - INFO - Iniciando intento 1 para: extraer_vehiculos
+2026-05-15 14:48:13 - ec_metrics_pipeline - INFO - Éxito: Se obtuvieron 454 registros activos.
+2026-05-15 14:48:13 - ec_metrics_pipeline - INFO - Iniciando intento ['vehicleId', 'vehicleName', 'tagId', 'tagName', 'parentTagId']
+2026-05-15 14:48:13 - ec_metrics_pipeline - INFO - Éxito: Columna agregada correctamente.
+2026-05-15 14:48:13 - fechas - INFO - Rango manual establecido: 2026-04-20 00:00:00-06:00 a 2026-04-26 23:59:59-06:00
+2026-05-15 14:55:10 - ec_metrics_pipeline - INFO - Consolidando datos...
+2026-05-15 14:55:10 - bd - INFO - Cargando en: samsara.reporte_ec_resumen
+2026-05-15 14:55:11 - bd - INFO - Exito en la carga
+2026-05-15 14:55:11 - root - INFO - Pipeline completado. Registros: 6

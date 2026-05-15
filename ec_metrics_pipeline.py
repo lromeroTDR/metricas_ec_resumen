@@ -66,8 +66,9 @@ def extraer_score_tags(url, headers, scoreType, start_time, end_time):
         return pl.DataFrame() 
 
 def transformacion_scores(scores):
-  """ Damos tratamiento al DF"""
+  """ Se transforma el df , explotando y desanidando el Json"""
   try:
+
     df_behaviors = (scores
                   .drop("speeding")
                   .explode("behaviors")
@@ -174,6 +175,8 @@ def transformacion_tags(df_tags, tags_filtro):
     except Exception as e:
         logger.error(f"Error en la transformación de tags: {e}")
         return None
+    
+
 def unir_tags_scores(df_scores, df_tags):
     """
     Une el nombre del tag padre al DataFrame maestro usando el ID del padre.
@@ -194,7 +197,7 @@ def unir_tags_scores(df_scores, df_tags):
 
     )
 
-    logger.info(f"Éxito: Columna 'nameParent' agregada correctamente.")
+    logger.info(f"Éxito: Se unieron los Scores_Tags, con los tags")
     return df_unificado
 # ===========================
 # Vehiculs con Etiqueta
@@ -266,6 +269,7 @@ def transformacion_vehiculos(df):
     print(f"Éxito: Vehículos transformados. Columnas: {df_vehiculos_transf.columns}")
     logger.info(f"Iniciando intento {df_vehiculos_transf.columns}")
     return df_vehiculos_transf
+
 def unir_tags_vehiculos(df_vehiculos, df_tags, tags_filtro):
     """
     Une el nombre del tag padre al DataFrame maestro usando el ID del padre.
@@ -316,7 +320,7 @@ def extraer_viajes(url, headers, list_vehicles, start_time, end_time):
         success = False
         trips = []
 
-        # --- INICIO LÓGICA DE REINTENTOS ---
+        # --- INICIO LOGICA DE REINTENTOS ---
         for intento in range(1, max_retries + 1):
             try:
                 params = {
@@ -340,7 +344,6 @@ def extraer_viajes(url, headers, list_vehicles, start_time, end_time):
                     time.sleep(retry_delay)
                 else:
                     logging.error(f"Se agotaron los intentos para el vehículo {v_id}. Saltando...")
-        # --- FIN LÓGICA DE REINTENTOS ---
 
         # Si después de los reintentos no tuvimos éxito, pasamos al siguiente vehículo
         if not success:
@@ -392,9 +395,11 @@ def proporcion_viajes(viajes, vehicleTags):
                                     (pl.col("indicador").sum()/pl.len()).alias("proporcionAsignados")
                                 )
     return proporcion_viajes_ec
+
 def unir_metricas_ec(proporcion_viajes, metricas, end_time):
+  
   fecha_dt = datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S.%fZ')
-  # Para extraer las metricas pasamos directamente el parantTag como un tag, por el id derecho es tagName, pero en izquierdo si lo tenemos con el nombre de parentTagName
+ 
   metricas_finales = (proporcion_viajes.
                       join(metricas, left_on="parentTagName", right_on="parentTagName", how="right")
                       .with_columns(

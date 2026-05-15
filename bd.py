@@ -35,6 +35,7 @@ def validar_existencia_semanal(fecha_corte_nueva,  table_name = DB_CONFIG['table
             existe = conn.execute(query, {"fecha": fecha_corte_nueva}).scalar()
             if existe > 0:
                 print(f"LA FECHA {fecha_corte_nueva} YA ESTA EN LA BD. CANCELANDO...")
+                logger.info("Se sale del programa, ya existe la fecha")
                 sys.exit()
             else:
                 print(f"Fecha {fecha_corte_nueva} libre. Procesando...")
